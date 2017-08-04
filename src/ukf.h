@@ -32,7 +32,7 @@ public:
   MatrixXd Xsig_pred_;
 
   ///* time when the state is true, in us
-  long long time_us_;
+  long time_us_;
 
   ///* Process noise standard deviation longitudinal acceleration in m/s^2
   double std_a_;
@@ -102,6 +102,14 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+private:
+  void AugmentedSigmaPoints(MatrixXd& Xsig_aug);
+  void SigmaPointPrediction(const MatrixXd& Xsig_aug, double delta_t);
+  void PredictMeanAndCovariance();
+  void PredictRadarMeasurement(MatrixXd& Zsig, VectorXd& z_pred, MatrixXd& S);
+  void PredictLidarMeasurement(MatrixXd& Zsig, VectorXd& z_pred, MatrixXd& S);
+  void UpdateState(const VectorXd& z,const MatrixXd& Zsig, const VectorXd& z_pred, const MatrixXd& S);
 };
 
 #endif /* UKF_H */
